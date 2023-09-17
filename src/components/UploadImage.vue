@@ -22,15 +22,31 @@
   </div>
 
   <!-- galeri -->
-  <div class="mt-16">
-    <v-row>
-      <v-col cols="3" v-for="imageUrl in imageUrl">
-       <div class="mx-5 text-center">
-        <img :src="imageUrl" alt="" style="max-width: 100%; height: 110px;">
-       </div>
+  <div class="mt-16 mx-16">
+    <v-row class="justify-center">
+      <v-col cols="2" v-for="(imageUrl, index) in imageUrl" :key="index">
+        <v-card width="100%" @click="singleImg = imageUrl">
+          <div class="mx-1 my-1 text-center">
+            <img :src="imageUrl" alt="" style="width: 100%; height: 150px; object-fit: cover;">
+          </div>
+        </v-card>
       </v-col>
     </v-row>
   </div>
+
+  <!-- modal -->
+  <v-dialog
+    v-model="modal"
+    activator="parent"
+    width="auto"
+  >
+    <v-card width="500px">
+      <img :src="singleImg" alt="" style="max-width: 100%; height: 100%;">
+      <v-card-actions>
+        <v-btn color="primary" block @click="modal = false">Close</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -40,8 +56,10 @@
     
     data: () => ({
       disableButton: true,
+      modal:false,
       valid: false,
       image:'',
+      singleImg:'',
       imageUrl: [],
       imageRules:[
         v => (v && 2000000 > v[0].size > 0) || 'Image is required and the size should be less than 2 MB!',
